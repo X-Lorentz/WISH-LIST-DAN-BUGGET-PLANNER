@@ -5,442 +5,1411 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wishlist & Budget Planner</title>
     <style>
+        /* Reset dan Base Styles */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f5f7fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             line-height: 1.6;
-            padding: 20px;
+            min-height: 100vh;
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            padding: 20px;
         }
         
+        /* Header Styles */
         header {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
-            padding: 30px;
+            padding: 30px 0;
             text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
         
-        h1 {
-            font-size: 2.2rem;
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,192C672,181,768,139,864,138.7C960,139,1056,181,1152,197.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
             margin-bottom: 10px;
+            position: relative;
         }
         
-        .description {
-            font-size: 1rem;
-            opacity: 0.9;
+        header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
         }
         
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
+        /* Card Styles */
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .budget-section {
-            flex: 1;
-            min-width: 300px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            margin: 10px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
         }
         
-        .wishlist-section {
-            flex: 2;
-            min-width: 300px;
-            padding: 20px;
-            margin: 10px;
-        }
-        
-        h2 {
-            color: #2575fc;
+        .card h2 {
+            color: #444;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
         }
         
+        .card h2 i {
+            margin-right: 10px;
+            color: #6a11cb;
+        }
+        
+        /* Form Styles */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            position: relative;
         }
         
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 600;
+            color: #555;
         }
         
-        input, select {
+        input, button, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
             border: 1px solid #ddd;
-            border-radius: 4px;
             font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
         }
         
         button {
-            background: #2575fc;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
             cursor: pointer;
-            font-size: 1rem;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
         button:hover {
-            background: #1a68e8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
         }
         
-        .summary {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-top: 20px;
+        button:active {
+            transform: translateY(0);
         }
         
-        .summary-item {
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        /* Input dengan format mata uang */
+        .currency-input {
+            position: relative;
+        }
+        
+        .currency-input::before {
+            content: "Rp";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        .currency-input input {
+            padding-left: 40px;
+        }
+        
+        /* Progress Bar Styles */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+        
+        .progress-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
         }
         
-        .summary-total {
-            font-weight: bold;
-            font-size: 1.2rem;
-            border-top: 1px solid #eee;
-            padding-top: 10px;
+        .progress-bar {
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
             margin-top: 10px;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            width: 0%;
+            border-radius: 15px;
+            transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-image: linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent
+            );
+            z-index: 1;
+            background-size: 50px 50px;
+            animation: move 2s linear infinite;
+            border-radius: 15px;
+        }
+        
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 50px 50px;
+            }
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .progress-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            flex: 1;
+            margin-right: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .progress-item:last-child {
+            margin-right: 0;
+        }
+        
+        .progress-item h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .progress-item p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .completion-date {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            100% {
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* Wishlist Styles */
         .wishlist-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
         
         .wishlist-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
         
-        .item-info {
-            flex: 2;
+        .wishlist-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
         
         .item-name {
-            font-weight: bold;
-            margin-bottom: 5px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
         }
         
-        .item-category {
-            font-size: 0.9rem;
-            color: #666;
+        .item-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
-        .item-price {
+        .item-detail {
+            margin-bottom: 8px;
             flex: 1;
-            text-align: right;
-            font-weight: bold;
-            color: #2575fc;
-        }
-        
-        .item-priority {
-            flex: 1;
-            text-align: center;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .priority-high {
-            background: #ffebee;
-            color: #d32f2f;
-        }
-        
-        .priority-medium {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-        
-        .priority-low {
-            background: #e8f5e9;
-            color: #388e3c;
+            min-width: 50%;
         }
         
         .delete-btn {
-            background: #ff5252;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 8px 15px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-left: 10px;
+            font-size: 0.9rem;
+            width: auto;
+            margin-top: 10px;
+            transition: all 0.3s;
         }
         
         .delete-btn:hover {
-            background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(255, 65, 108, 0.4);
         }
         
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        /* Responsive Styles */
         @media (max-width: 768px) {
-            .main-content {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .wishlist-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .progress-info {
                 flex-direction: column;
             }
             
-            .budget-section, .wishlist-section {
-                width: 100%;
+            .progress-item {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.7rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .item-details {
+                flex-direction: column;
+            }
+            
+            .item-detail {
+                min-width: 100%;
+            }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        /* Animation for new items */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #6a11cb;
+            color: #6a11cb;
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Savings Section - IMPROVED */
+        .savings-display {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .savings-display:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(67, 233, 123, 0.4);
+        }
+        
+        .savings-display::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            animation: rotate 15s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .savings-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        .savings-display h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .savings-amount {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 20px 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        
+        .savings-amount.updated {
+            animation: pulse-grow 0.5s ease;
+        }
+        
+        @keyframes pulse-grow {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .savings-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .savings-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .btn-add, .btn-subtract {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-add {
+            background: rgba(255, 255, 255, 0.9);
+            color: #43e97b;
+        }
+        
+        .btn-subtract {
+            background: rgba(255, 255, 255, 0.9);
+            color: #ff416c;
+        }
+        
+        .btn-add:hover, .btn-subtract:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-add:active, .btn-subtract:active {
+            transform: translateY(0);
+        }
+        
+        /* Transaction History */
+        .transaction-history {
+            margin-top: 30px;
+        }
+        
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .transaction-details {
+            flex: 1;
+        }
+        
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .transaction-positive {
+            color: #43e97b;
+        }
+        
+        .transaction-negative {
+            color: #ff416c;
+        }
+        
+        .transaction-date {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .transaction-description {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* Button Group */
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .button-group button {
+            flex: 1;
+        }
+        
+        /* Savings Stats */
+        .savings-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 15px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h4 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card p {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        /* Confetti Effect */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0.7;
+            border-radius: 50%;
+            animation: confetti-fall 5s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(1000px) rotate(360deg);
+                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
+    <header>
+        <div class="container">
             <h1>Wishlist & Budget Planner</h1>
-            <p class="description">Kelola keinginan Anda dan rencanakan anggaran dengan bijak</p>
-        </header>
+            <p>Kelola daftar keinginan Anda dan rencanakan anggaran dengan mudah</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="wishlist-tab">Tambah Wishlist</div>
+            <div class="tab" data-tab="savings-tab">Kelola Tabungan</div>
+        </div>
         
-        <div class="main-content">
-            <section class="budget-section">
-                <h2>Budget Planner</h2>
-                
-                <div class="form-group">
-                    <label for="budget">Anggaran Bulanan</label>
-                    <input type="number" id="budget" placeholder="Masukkan jumlah anggaran">
-                </div>
-                
-                <button id="set-budget">Atur Anggaran</button>
-                
-                <div class="summary">
-                    <div class="summary-item">
-                        <span>Anggaran:</span>
-                        <span id="budget-amount">Rp 0</span>
-                    </div>
-                    <div class="summary-item">
-                        <span>Total Wishlist:</span>
-                        <span id="total-wishlist">Rp 0</span>
-                    </div>
-                    <div class="summary-item summary-total">
-                        <span>Sisa Anggaran:</span>
-                        <span id="remaining-budget">Rp 0</span>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="wishlist-section">
-                <h2>Wishlist Saya</h2>
-                
+        <section class="card tab-content active" id="wishlist-tab">
+            <h2><i>➕</i> Tambah Barang Wishlist</h2>
+            <form id="wishlist-form">
                 <div class="form-group">
                     <label for="item-name">Nama Barang</label>
-                    <input type="text" id="item-name" placeholder="Masukkan nama barang">
+                    <input type="text" id="item-name" placeholder="Masukkan nama barang" required>
                 </div>
-                
-                <div class="form-group">
-                    <label for="item-price">Harga</label>
-                    <input type="number" id="item-price" placeholder="Masukkan harga">
+                <div class="form-group currency-input">
+                    <label for="item-price">Harga Barang</label>
+                    <input type="text" id="item-price" placeholder="Masukkan harga barang" required>
                 </div>
-                
-                <div class="form-group">
-                    <label for="item-category">Kategori</label>
-                    <select id="item-category">
-                        <option value="fashion">Fashion</option>
-                        <option value="elektronik">Elektronik</option>
-                        <option value="rumah-tangga">Rumah Tangga</option>
-                        <option value="hobi">Hobi</option>
-                        <option value="lainnya">Lainnya</option>
-                    </select>
+                <div class="form-group currency-input">
+                    <label for="weekly-budget">Uang Saku per Minggu</label>
+                    <input type="text" id="weekly-budget" placeholder="Masukkan uang saku mingguan" required>
                 </div>
+                <button type="submit">Tambah ke Wishlist</button>
+            </form>
+        </section>
+        
+        <section class="card tab-content" id="savings-tab">
+            <h2><i>💰</i> Kelola Tabungan</h2>
+            
+            <div class="savings-display">
+                <span class="savings-icon">💰</span>
+                <h3>Total Tabungan Saat Ini</h3>
+                <div class="savings-amount" id="total-savings-display">Rp 0</div>
+                <p class="savings-subtitle">Tabungan Anda untuk mencapai impian</p>
                 
-                <div class="form-group">
-                    <label for="item-priority">Prioritas</label>
-                    <select id="item-priority">
-                        <option value="high">Tinggi</option>
-                        <option value="medium">Sedang</option>
-                        <option value="low">Rendah</option>
-                    </select>
+                <div class="savings-actions">
+                    <button class="btn-add" id="add-savings-btn">
+                        <span>+</span> Tambah Tabungan
+                    </button>
+                    <button class="btn-subtract" id="subtract-savings-btn">
+                        <span>-</span> Kurangi Tabungan
+                    </button>
                 </div>
-                
-                <button id="add-item">Tambah ke Wishlist</button>
-                
-                <div class="wishlist-items" id="wishlist-container">
-                    <!-- Item wishlist akan ditambahkan di sini -->
+            </div>
+            
+            <div class="savings-stats">
+                <div class="stat-card">
+                    <h4>Transaksi Bulan Ini</h4>
+                    <p id="monthly-transactions">0</p>
                 </div>
-            </section>
-        </div>
+                <div class="stat-card">
+                    <h4>Rata-rata Menabung</h4>
+                    <p id="average-savings">Rp 0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Target Tercapai</h4>
+                    <p id="target-achieved">0%</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="transaction-amount">Jumlah Transaksi</label>
+                <div class="currency-input">
+                    <input type="text" id="transaction-amount" placeholder="Masukkan jumlah transaksi">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="transaction-description">Keterangan (Opsional)</label>
+                <textarea id="transaction-description" placeholder="Masukkan keterangan transaksi" rows="2"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button id="add-transaction" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <span>+</span> Tambah
+                </button>
+                <button id="subtract-transaction" style="background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);">
+                    <span>-</span> Kurangi
+                </button>
+            </div>
+            
+            <div class="transaction-history">
+                <h3><i>📋</i> Riwayat Transaksi</h3>
+                <div class="transaction-list" id="transaction-list">
+                    <div class="empty-state">
+                        <p>Belum ada transaksi. Mulai tambah atau kurangi tabungan!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2><i>📊</i> Progress Menabung</h2>
+            <div class="progress-container">
+                <div class="progress-header">
+                    <h3>Target Menabung</h3>
+                    <span id="progress-percentage">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="progress-info">
+                <div class="progress-item">
+                    <h3>Total Harga Wishlist</h3>
+                    <p id="total-price">Rp 0</p>
+                </div>
+                <div class="progress-item">
+                    <h3>Tabungan Saat Ini</h3>
+                    <p id="current-savings-display">Rp 0</p>
+                </div>
+                <div class="progress-item">
+                    <h3>Kekurangan</h3>
+                    <p id="remaining-amount">Rp 0</p>
+                </div>
+            </div>
+            
+            <div class="progress-info">
+                <div class="progress-item">
+                    <h3>Perkiraan Waktu</h3>
+                    <p id="estimated-time">0 minggu</p>
+                </div>
+                <div class="progress-item">
+                    <h3>Uang Saku/Minggu</h3>
+                    <p id="weekly-budget-display">Rp 0</p>
+                </div>
+            </div>
+            
+            <div class="completion-date" id="completion-date">
+                <strong>Tanggal Perkiraan Selesai:</strong> Belum ada data
+            </div>
+        </section>
+        
+        <section class="card">
+            <h2><i>🎁</i> Daftar Wishlist Anda</h2>
+            <div class="wishlist-items" id="wishlist-items">
+                <div class="empty-state">
+                    <p>Belum ada barang di wishlist. Tambahkan barang pertama Anda!</p>
+                </div>
+            </div>
+        </section>
     </div>
+    
+    <footer>
+        <div class="container">
+            <p>Dikembangkan oleh M. Nabil Naufal Yakin dan Syaifullah Ilham Nauval - SMKN Rengel</p>
+            <p>Kolaborasi dengan DeepSeek AI sebagai "Konco Cerdas"</p>
+        </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inisialisasi variabel
-            let budget = 0;
-            let totalWishlist = 0;
-            let wishlistItems = [];
+        // DOM Elements
+        const wishlistForm = document.getElementById('wishlist-form');
+        const wishlistItemsContainer = document.getElementById('wishlist-items');
+        const progressFill = document.getElementById('progress-fill');
+        const totalPriceElement = document.getElementById('total-price');
+        const estimatedTimeElement = document.getElementById('estimated-time');
+        const weeklyBudgetDisplay = document.getElementById('weekly-budget-display');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const completionDateElement = document.getElementById('completion-date');
+        const currentSavingsDisplay = document.getElementById('current-savings-display');
+        const remainingAmountElement = document.getElementById('remaining-amount');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Savings elements
+        const totalSavingsDisplay = document.getElementById('total-savings-display');
+        const transactionAmountInput = document.getElementById('transaction-amount');
+        const transactionDescriptionInput = document.getElementById('transaction-description');
+        const addTransactionBtn = document.getElementById('add-transaction');
+        const subtractTransactionBtn = document.getElementById('subtract-transaction');
+        const transactionList = document.getElementById('transaction-list');
+        const addSavingsBtn = document.getElementById('add-savings-btn');
+        const subtractSavingsBtn = document.getElementById('subtract-savings-btn');
+        
+        // Stats elements
+        const monthlyTransactionsElement = document.getElementById('monthly-transactions');
+        const averageSavingsElement = document.getElementById('average-savings');
+        const targetAchievedElement = document.getElementById('target-achieved');
+        
+        // Data wishlist, tabungan, dan transaksi
+        let wishlist = [];
+        let currentSavings = 0;
+        let transactions = [];
+        
+        // Fungsi untuk memformat angka dengan pemisah ribuan
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('id-ID').format(value);
+        }
+        
+        // Fungsi untuk menghapus format mata uang (menghapus titik dan mengembalikan angka)
+        function parseCurrency(value) {
+            if (!value) return 0;
+            return parseInt(value.toString().replace(/\./g, '')) || 0;
+        }
+        
+        // Fungsi untuk memformat input saat mengetik
+        function formatInput(element) {
+            // Dapatkan nilai input dan hapus semua karakter non-digit
+            let value = element.value.replace(/\D/g, '');
             
-            // Elemen DOM
-            const budgetInput = document.getElementById('budget');
-            const setBudgetBtn = document.getElementById('set-budget');
-            const budgetAmount = document.getElementById('budget-amount');
-            const totalWishlistElement = document.getElementById('total-wishlist');
-            const remainingBudget = document.getElementById('remaining-budget');
+            // Format dengan titik sebagai pemisah ribuan
+            if (value.length > 0) {
+                value = formatCurrency(parseInt(value));
+            }
             
-            const itemNameInput = document.getElementById('item-name');
-            const itemPriceInput = document.getElementById('item-price');
-            const itemCategorySelect = document.getElementById('item-category');
-            const itemPrioritySelect = document.getElementById('item-priority');
-            const addItemBtn = document.getElementById('add-item');
-            const wishlistContainer = document.getElementById('wishlist-container');
+            // Set nilai input yang sudah diformat
+            element.value = value;
+        }
+        
+        // Fungsi untuk membuat efek confetti
+        function createConfetti() {
+            const savingsDisplay = document.querySelector('.savings-display');
+            const colors = ['#43e97b', '#38f9d7', '#ff9a9e', '#fad0c4', '#a18cd1', '#fbc2eb'];
             
-            // Fungsi untuk mengatur anggaran
-            setBudgetBtn.addEventListener('click', function() {
-                const budgetValue = parseFloat(budgetInput.value);
-                if (!isNaN(budgetValue) && budgetValue >= 0) {
-                    budget = budgetValue;
-                    budgetAmount.textContent = formatCurrency(budget);
-                    updateSummary();
-                    budgetInput.value = '';
-                } else {
-                    alert('Masukkan jumlah anggaran yang valid');
-                }
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                savingsDisplay.appendChild(confetti);
+                
+                // Hapus confetti setelah animasi selesai
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Fungsi untuk menghitung statistik
+        function calculateStats() {
+            // Hitung transaksi bulan ini
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+            
+            const monthlyTransactions = transactions.filter(transaction => {
+                const transactionDate = new Date(transaction.id);
+                return transactionDate.getMonth() === currentMonth && 
+                       transactionDate.getFullYear() === currentYear;
+            }).length;
+            
+            monthlyTransactionsElement.textContent = monthlyTransactions;
+            
+            // Hitung rata-rata menabung
+            const totalSavingsAmount = transactions
+                .filter(t => t.type === 'tambah')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const savingsCount = transactions.filter(t => t.type === 'tambah').length;
+            const averageSavings = savingsCount > 0 ? Math.round(totalSavingsAmount / savingsCount) : 0;
+            averageSavingsElement.textContent = `Rp ${formatCurrency(averageSavings)}`;
+            
+            // Hitung persentase target tercapai
+            const totalWishlistPrice = wishlist.reduce((sum, item) => sum + item.price, 0);
+            const targetAchieved = totalWishlistPrice > 0 ? 
+                Math.min(100, Math.round((currentSavings / totalWishlistPrice) * 100)) : 0;
+            targetAchievedElement.textContent = `${targetAchieved}%`;
+        }
+        
+        // Load data dari localStorage saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedWishlist = localStorage.getItem('wishlist');
+            const savedSavings = localStorage.getItem('currentSavings');
+            const savedTransactions = localStorage.getItem('transactions');
+            
+            if (savedWishlist) {
+                wishlist = JSON.parse(savedWishlist);
+                renderWishlist();
+            }
+            
+            if (savedSavings) {
+                currentSavings = parseInt(savedSavings);
+                updateSavingsDisplay(false);
+            }
+            
+            if (savedTransactions) {
+                transactions = JSON.parse(savedTransactions);
+                renderTransactionHistory();
+                calculateStats();
+            }
+            
+            updateProgress();
+            
+            // Setup tab functionality
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
             });
             
-            // Fungsi untuk menambah item ke wishlist
-            addItemBtn.addEventListener('click', function() {
-                const name = itemNameInput.value.trim();
-                const price = parseFloat(itemPriceInput.value);
-                const category = itemCategorySelect.value;
-                const priority = itemPrioritySelect.value;
+            // Tambahkan event listener untuk input mata uang
+            const currencyInputs = document.querySelectorAll('.currency-input input');
+            currencyInputs.forEach(input => {
+                // Format saat input berubah
+                input.addEventListener('input', () => {
+                    formatInput(input);
+                });
                 
-                if (name === '' || isNaN(price) || price <= 0) {
-                    alert('Masukkan nama dan harga yang valid');
-                    return;
-                }
-                
-                const newItem = {
-                    id: Date.now(),
-                    name: name,
-                    price: price,
-                    category: category,
-                    priority: priority
-                };
-                
-                wishlistItems.push(newItem);
-                renderWishlist();
-                updateSummary();
-                
-                // Reset form
-                itemNameInput.value = '';
-                itemPriceInput.value = '';
-                itemCategorySelect.value = 'fashion';
-                itemPrioritySelect.value = 'high';
+                // Format saat input kehilangan fokus (untuk memastikan)
+                input.addEventListener('blur', () => {
+                    formatInput(input);
+                });
             });
             
-            // Fungsi untuk merender wishlist
-            function renderWishlist() {
-                wishlistContainer.innerHTML = '';
-                totalWishlist = 0;
-                
-                wishlistItems.forEach(item => {
-                    totalWishlist += item.price;
-                    
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'wishlist-item';
-                    
-                    const priorityClass = `priority-${item.priority}`;
-                    
-                    itemElement.innerHTML = `
-                        <div class="item-info">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-category">${getCategoryName(item.category)}</div>
-                        </div>
-                        <div class="item-price">${formatCurrency(item.price)}</div>
-                        <div class="item-priority ${priorityClass}">${getPriorityName(item.priority)}</div>
-                        <button class="delete-btn" data-id="${item.id}">Hapus</button>
-                    `;
-                    
-                    wishlistContainer.appendChild(itemElement);
-                });
-                
-                // Tambahkan event listener untuk tombol hapus
-                document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = parseInt(this.getAttribute('data-id'));
-                        deleteWishlistItem(itemId);
-                    });
-                });
-            }
+            // Event listener untuk tombol transaksi
+            addTransactionBtn.addEventListener('click', addTransaction);
+            subtractTransactionBtn.addEventListener('click', subtractTransaction);
             
-            // Fungsi untuk menghapus item dari wishlist
-            function deleteWishlistItem(id) {
-                wishlistItems = wishlistItems.filter(item => item.id !== id);
-                renderWishlist();
-                updateSummary();
-            }
+            // Event listener untuk tombol aksi cepat
+            addSavingsBtn.addEventListener('click', () => {
+                transactionAmountInput.value = '';
+                transactionDescriptionInput.value = '';
+                transactionAmountInput.focus();
+            });
             
-            // Fungsi untuk memperbarui ringkasan
-            function updateSummary() {
-                totalWishlistElement.textContent = formatCurrency(totalWishlist);
-                const remaining = budget - totalWishlist;
-                remainingBudget.textContent = formatCurrency(remaining);
-                
-                // Warna sisa anggaran
-                if (remaining < 0) {
-                    remainingBudget.style.color = '#d32f2f';
-                } else if (remaining < budget * 0.2) {
-                    remainingBudget.style.color = '#f57c00';
-                } else {
-                    remainingBudget.style.color = '#388e3c';
-                }
-            }
-            
-            // Fungsi utilitas untuk format mata uang
-            function formatCurrency(amount) {
-                return 'Rp ' + amount.toLocaleString('id-ID');
-            }
-            
-            // Fungsi untuk mendapatkan nama kategori
-            function getCategoryName(category) {
-                const categories = {
-                    'fashion': 'Fashion',
-                    'elektronik': 'Elektronik',
-                    'rumah-tangga': 'Rumah Tangga',
-                    'hobi': 'Hobi',
-                    'lainnya': 'Lainnya'
-                };
-                return categories[category] || 'Lainnya';
-            }
-            
-            // Fungsi untuk mendapatkan nama prioritas
-            function getPriorityName(priority) {
-                const priorities = {
-                    'high': 'Tinggi',
-                    'medium': 'Sedang',
-                    'low': 'Rendah'
-                };
-                return priorities[priority] || 'Sedang';
-            }
+            subtractSavingsBtn.addEventListener('click', () => {
+                transactionAmountInput.value = '';
+                transactionDescriptionInput.value = '';
+                transactionAmountInput.focus();
+            });
         });
+        
+        // Event listener untuk form wishlist
+        wishlistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const itemName = document.getElementById('item-name').value.trim();
+            const itemPrice = parseCurrency(document.getElementById('item-price').value);
+            const weeklyBudget = parseCurrency(document.getElementById('weekly-budget').value);
+            
+            // Validasi input
+            if (!itemName || !itemPrice || !weeklyBudget) {
+                alert('Semua field harus diisi!');
+                return;
+            }
+            
+            if (itemPrice <= 0 || weeklyBudget <= 0) {
+                alert('Harga dan uang saku harus lebih dari 0!');
+                return;
+            }
+            
+            // Hitung minggu yang dibutuhkan
+            const weeksNeeded = Math.ceil(itemPrice / weeklyBudget);
+            
+            // Hitung tanggal selesai
+            const completionDate = calculateCompletionDate(weeksNeeded);
+            
+            // Tambahkan item ke wishlist
+            const newItem = {
+                id: Date.now(),
+                name: itemName,
+                price: itemPrice,
+                weeklyBudget: weeklyBudget,
+                weeksNeeded: weeksNeeded,
+                completionDate: completionDate,
+                addedDate: new Date().toLocaleDateString('id-ID')
+            };
+            
+            wishlist.push(newItem);
+            
+            // Simpan ke localStorage
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            
+            // Render ulang wishlist dan update progress
+            renderWishlist();
+            updateProgress();
+            calculateStats();
+            
+            // Reset form
+            wishlistForm.reset();
+        });
+        
+        // Fungsi untuk menambah transaksi
+        function addTransaction() {
+            const amount = parseCurrency(transactionAmountInput.value);
+            const description = transactionDescriptionInput.value.trim() || 'Penambahan tabungan';
+            
+            if (amount <= 0) {
+                alert('Jumlah transaksi harus lebih dari 0!');
+                return;
+            }
+            
+            // Tambahkan transaksi
+            const transaction = {
+                id: Date.now(),
+                type: 'tambah',
+                amount: amount,
+                description: description,
+                date: new Date().toLocaleString('id-ID')
+            };
+            
+            transactions.unshift(transaction);
+            currentSavings += amount;
+            
+            // Simpan ke localStorage
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            localStorage.setItem('currentSavings', currentSavings.toString());
+            
+            // Update tampilan
+            renderTransactionHistory();
+            updateSavingsDisplay(true);
+            updateProgress();
+            calculateStats();
+            
+            // Reset form
+            transactionAmountInput.value = '';
+            transactionDescriptionInput.value = '';
+            
+            // Efek confetti jika tabungan mencapai target tertentu
+            const totalWishlistPrice = wishlist.reduce((sum, item) => sum + item.price, 0);
+            if (totalWishlistPrice > 0 && currentSavings >= totalWishlistPrice) {
+                createConfetti();
+            }
+            
+            alert('Tabungan berhasil ditambahkan!');
+        }
+        
+        // Fungsi untuk mengurangi transaksi
+        function subtractTransaction() {
+            const amount = parseCurrency(transactionAmountInput.value);
+            const description = transactionDescriptionInput.value.trim() || 'Pengurangan tabungan';
+            
+            if (amount <= 0) {
+                alert('Jumlah transaksi harus lebih dari 0!');
+                return;
+            }
+            
+            if (amount > currentSavings) {
+                alert('Jumlah pengurangan tidak boleh melebihi tabungan saat ini!');
+                return;
+            }
+            
+            // Tambahkan transaksi
+            const transaction = {
+                id: Date.now(),
+                type: 'kurang',
+                amount: amount,
+                description: description,
+                date: new Date().toLocaleString('id-ID')
+            };
+            
+            transactions.unshift(transaction);
+            currentSavings -= amount;
+            
+            // Simpan ke localStorage
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+            localStorage.setItem('currentSavings', currentSavings.toString());
+            
+            // Update tampilan
+            renderTransactionHistory();
+            updateSavingsDisplay(true);
+            updateProgress();
+            calculateStats();
+            
+            // Reset form
+            transactionAmountInput.value = '';
+            transactionDescriptionInput.value = '';
+            
+            alert('Tabungan berhasil dikurangi!');
+        }
+        
+        // Fungsi untuk menampilkan riwayat transaksi
+        function renderTransactionHistory() {
+            if (transactions.length === 0) {
+                transactionList.innerHTML = `
+                    <div class="empty-state">
+                        <p>Belum ada transaksi. Mulai tambah atau kurangi tabungan!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            transactionList.innerHTML = '';
+            
+            transactions.forEach(transaction => {
+                const transactionElement = document.createElement('div');
+                transactionElement.className = 'transaction-item fade-in';
+                
+                const amountClass = transaction.type === 'tambah' ? 'transaction-positive' : 'transaction-negative';
+                const amountSign = transaction.type === 'tambah' ? '+' : '-';
+                
+                transactionElement.innerHTML = `
+                    <div class="transaction-details">
+                        <div class="transaction-description">${transaction.description}</div>
+                        <div class="transaction-date">${transaction.date}</div>
+                    </div>
+                    <div class="transaction-amount ${amountClass}">
+                        ${amountSign} Rp ${formatCurrency(transaction.amount)}
+                    </div>
+                `;
+                
+                transactionList.appendChild(transactionElement);
+            });
+        }
+        
+        // Fungsi untuk update tampilan tabungan
+        function updateSavingsDisplay(animate = false) {
+            totalSavingsDisplay.textContent = `Rp ${formatCurrency(currentSavings)}`;
+            currentSavingsDisplay.textContent = `Rp ${formatCurrency(currentSavings)}`;
+            
+            if (animate) {
+                totalSavingsDisplay.classList.add('updated');
+                setTimeout(() => {
+                    totalSavingsDisplay.classList.remove('updated');
+                }, 500);
+            }
+        }
+        
+        // Fungsi untuk render wishlist
+        function renderWishlist() {
+            if (wishlist.length === 0) {
+                wishlistItemsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>Belum ada barang di wishlist. Tambahkan barang pertama Anda!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            wishlistItemsContainer.innerHTML = '';
+            
+            wishlist.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'wishlist-item fade-in';
+                itemElement.innerHTML = `
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-details">
+                        <div class="item-detail">
+                            <strong>Harga:</strong> Rp ${formatCurrency(item.price)}
+                        </div>
+                        <div class="item-detail">
+                            <strong>Ditambahkan:</strong> ${item.addedDate}
+                        </div>
+                        <div class="item-detail">
+                            <strong>Uang saku/minggu:</strong> Rp ${formatCurrency(item.weeklyBudget)}
+                        </div>
+                        <div class="item-detail">
+                            <strong>Perkiraan:</strong> ${item.weeksNeeded} minggu
+                        </div>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-detail">
+                            <strong>Perkiraan selesai:</strong> ${item.completionDate}
+                        </div>
+                    </div>
+                    <button class="delete-btn" data-id="${item.id}">Hapus</button>
+                `;
+                
+                wishlistItemsContainer.appendChild(itemElement);
+            });
+            
+            // Tambahkan event listener untuk tombol hapus
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    deleteItem(itemId);
+                });
+            });
+        }
+        
+        // Fungsi untuk menghapus item
+        function deleteItem(itemId) {
+            if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                wishlist = wishlist.filter(item => item.id !== itemId);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                renderWishlist();
+                updateProgress();
+                calculateStats();
+            }
+        }
+        
+        // Fungsi untuk update progress bar
+        function updateProgress() {
+            if (wishlist.length === 0) {
+                progressFill.style.width = '0%';
+                totalPriceElement.textContent = 'Rp 0';
+                estimatedTimeElement.textContent = '0 minggu';
+                weeklyBudgetDisplay.textContent = 'Rp 0';
+                progressPercentage.textContent = '0%';
+                currentSavingsDisplay.textContent = 'Rp 0';
+                remainingAmountElement.textContent = 'Rp 0';
+                completionDateElement.innerHTML = '<strong>Tanggal Perkiraan Selesai:</strong> Belum ada data';
+                return;
+            }
+            
+            // Hitung total harga dan minggu
+            const totalPrice = wishlist.reduce((sum, item) => sum + item.price, 0);
+            const totalWeeklyBudget = wishlist.reduce((sum, item) => sum + item.weeklyBudget, 0);
+            const avgWeeklyBudget = Math.round(totalWeeklyBudget / wishlist.length);
+            
+            // Hitung kekurangan dan persentase progress
+            const remainingAmount = Math.max(0, totalPrice - currentSavings);
+            const progressPercentageValue = Math.min(100, Math.round((currentSavings / totalPrice) * 100));
+            
+            // Hitung perkiraan waktu berdasarkan kekurangan dan rata-rata uang saku
+            const estimatedWeeks = avgWeeklyBudget > 0 ? Math.ceil(remainingAmount / avgWeeklyBudget) : 0;
+            
+            // Update progress bar
+            progressFill.style.width = `${progressPercentageValue}%`;
+            progressPercentage.textContent = `${progressPercentageValue}%`;
+            
+            // Update informasi dengan format mata uang
+            totalPriceElement.textContent = `Rp ${formatCurrency(totalPrice)}`;
+            estimatedTimeElement.textContent = `${estimatedWeeks} minggu`;
+            weeklyBudgetDisplay.textContent = `Rp ${formatCurrency(avgWeeklyBudget)}`;
+            currentSavingsDisplay.textContent = `Rp ${formatCurrency(currentSavings)}`;
+            remainingAmountElement.textContent = `Rp ${formatCurrency(remainingAmount)}`;
+            
+            // Update tanggal selesai
+            if (estimatedWeeks > 0) {
+                const completionDate = calculateCompletionDate(estimatedWeeks);
+                completionDateElement.innerHTML = `<strong>Perkiraan Selesai:</strong> ${completionDate}`;
+            } else if (currentSavings >= totalPrice) {
+                completionDateElement.innerHTML = `<strong>Selamat! Tabungan Anda sudah cukup!</strong>`;
+            } else {
+                completionDateElement.innerHTML = `<strong>Tanggal Perkiraan Selesai:</strong> Belum dapat dihitung`;
+            }
+        }
+        
+        // Fungsi untuk menghitung tanggal selesai
+        function calculateCompletionDate(weeks) {
+            const today = new Date();
+            const completionDate = new Date(today);
+            completionDate.setDate(today.getDate() + (weeks * 7));
+            
+            return completionDate.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
     </script>
 </body>
 </html>
