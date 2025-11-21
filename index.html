@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist & Budget Planner</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .budget-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        
+        .wishlist-section {
+            flex: 2;
+            min-width: 300px;
+            padding: 20px;
+            margin: 10px;
+        }
+        
+        h2 {
+            color: #2575fc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: #2575fc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #1a68e8;
+        }
+        
+        .summary {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .wishlist-items {
+            margin-top: 20px;
+        }
+        
+        .wishlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+        }
+        
+        .item-info {
+            flex: 2;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .item-category {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .item-price {
+            flex: 1;
+            text-align: right;
+            font-weight: bold;
+            color: #2575fc;
+        }
+        
+        .item-priority {
+            flex: 1;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .priority-high {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .priority-medium {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .priority-low {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .delete-btn {
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .budget-section, .wishlist-section {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Wishlist & Budget Planner</h1>
+            <p class="description">Kelola keinginan Anda dan rencanakan anggaran dengan bijak</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="budget-section">
+                <h2>Budget Planner</h2>
+                
+                <div class="form-group">
+                    <label for="budget">Anggaran Bulanan</label>
+                    <input type="number" id="budget" placeholder="Masukkan jumlah anggaran">
+                </div>
+                
+                <button id="set-budget">Atur Anggaran</button>
+                
+                <div class="summary">
+                    <div class="summary-item">
+                        <span>Anggaran:</span>
+                        <span id="budget-amount">Rp 0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Total Wishlist:</span>
+                        <span id="total-wishlist">Rp 0</span>
+                    </div>
+                    <div class="summary-item summary-total">
+                        <span>Sisa Anggaran:</span>
+                        <span id="remaining-budget">Rp 0</span>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="wishlist-section">
+                <h2>Wishlist Saya</h2>
+                
+                <div class="form-group">
+                    <label for="item-name">Nama Barang</label>
+                    <input type="text" id="item-name" placeholder="Masukkan nama barang">
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-price">Harga</label>
+                    <input type="number" id="item-price" placeholder="Masukkan harga">
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-category">Kategori</label>
+                    <select id="item-category">
+                        <option value="fashion">Fashion</option>
+                        <option value="elektronik">Elektronik</option>
+                        <option value="rumah-tangga">Rumah Tangga</option>
+                        <option value="hobi">Hobi</option>
+                        <option value="lainnya">Lainnya</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-priority">Prioritas</label>
+                    <select id="item-priority">
+                        <option value="high">Tinggi</option>
+                        <option value="medium">Sedang</option>
+                        <option value="low">Rendah</option>
+                    </select>
+                </div>
+                
+                <button id="add-item">Tambah ke Wishlist</button>
+                
+                <div class="wishlist-items" id="wishlist-container">
+                    <!-- Item wishlist akan ditambahkan di sini -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi variabel
+            let budget = 0;
+            let totalWishlist = 0;
+            let wishlistItems = [];
+            
+            // Elemen DOM
+            const budgetInput = document.getElementById('budget');
+            const setBudgetBtn = document.getElementById('set-budget');
+            const budgetAmount = document.getElementById('budget-amount');
+            const totalWishlistElement = document.getElementById('total-wishlist');
+            const remainingBudget = document.getElementById('remaining-budget');
+            
+            const itemNameInput = document.getElementById('item-name');
+            const itemPriceInput = document.getElementById('item-price');
+            const itemCategorySelect = document.getElementById('item-category');
+            const itemPrioritySelect = document.getElementById('item-priority');
+            const addItemBtn = document.getElementById('add-item');
+            const wishlistContainer = document.getElementById('wishlist-container');
+            
+            // Fungsi untuk mengatur anggaran
+            setBudgetBtn.addEventListener('click', function() {
+                const budgetValue = parseFloat(budgetInput.value);
+                if (!isNaN(budgetValue) && budgetValue >= 0) {
+                    budget = budgetValue;
+                    budgetAmount.textContent = formatCurrency(budget);
+                    updateSummary();
+                    budgetInput.value = '';
+                } else {
+                    alert('Masukkan jumlah anggaran yang valid');
+                }
+            });
+            
+            // Fungsi untuk menambah item ke wishlist
+            addItemBtn.addEventListener('click', function() {
+                const name = itemNameInput.value.trim();
+                const price = parseFloat(itemPriceInput.value);
+                const category = itemCategorySelect.value;
+                const priority = itemPrioritySelect.value;
+                
+                if (name === '' || isNaN(price) || price <= 0) {
+                    alert('Masukkan nama dan harga yang valid');
+                    return;
+                }
+                
+                const newItem = {
+                    id: Date.now(),
+                    name: name,
+                    price: price,
+                    category: category,
+                    priority: priority
+                };
+                
+                wishlistItems.push(newItem);
+                renderWishlist();
+                updateSummary();
+                
+                // Reset form
+                itemNameInput.value = '';
+                itemPriceInput.value = '';
+                itemCategorySelect.value = 'fashion';
+                itemPrioritySelect.value = 'high';
+            });
+            
+            // Fungsi untuk merender wishlist
+            function renderWishlist() {
+                wishlistContainer.innerHTML = '';
+                totalWishlist = 0;
+                
+                wishlistItems.forEach(item => {
+                    totalWishlist += item.price;
+                    
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'wishlist-item';
+                    
+                    const priorityClass = `priority-${item.priority}`;
+                    
+                    itemElement.innerHTML = `
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-category">${getCategoryName(item.category)}</div>
+                        </div>
+                        <div class="item-price">${formatCurrency(item.price)}</div>
+                        <div class="item-priority ${priorityClass}">${getPriorityName(item.priority)}</div>
+                        <button class="delete-btn" data-id="${item.id}">Hapus</button>
+                    `;
+                    
+                    wishlistContainer.appendChild(itemElement);
+                });
+                
+                // Tambahkan event listener untuk tombol hapus
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const itemId = parseInt(this.getAttribute('data-id'));
+                        deleteWishlistItem(itemId);
+                    });
+                });
+            }
+            
+            // Fungsi untuk menghapus item dari wishlist
+            function deleteWishlistItem(id) {
+                wishlistItems = wishlistItems.filter(item => item.id !== id);
+                renderWishlist();
+                updateSummary();
+            }
+            
+            // Fungsi untuk memperbarui ringkasan
+            function updateSummary() {
+                totalWishlistElement.textContent = formatCurrency(totalWishlist);
+                const remaining = budget - totalWishlist;
+                remainingBudget.textContent = formatCurrency(remaining);
+                
+                // Warna sisa anggaran
+                if (remaining < 0) {
+                    remainingBudget.style.color = '#d32f2f';
+                } else if (remaining < budget * 0.2) {
+                    remainingBudget.style.color = '#f57c00';
+                } else {
+                    remainingBudget.style.color = '#388e3c';
+                }
+            }
+            
+            // Fungsi utilitas untuk format mata uang
+            function formatCurrency(amount) {
+                return 'Rp ' + amount.toLocaleString('id-ID');
+            }
+            
+            // Fungsi untuk mendapatkan nama kategori
+            function getCategoryName(category) {
+                const categories = {
+                    'fashion': 'Fashion',
+                    'elektronik': 'Elektronik',
+                    'rumah-tangga': 'Rumah Tangga',
+                    'hobi': 'Hobi',
+                    'lainnya': 'Lainnya'
+                };
+                return categories[category] || 'Lainnya';
+            }
+            
+            // Fungsi untuk mendapatkan nama prioritas
+            function getPriorityName(priority) {
+                const priorities = {
+                    'high': 'Tinggi',
+                    'medium': 'Sedang',
+                    'low': 'Rendah'
+                };
+                return priorities[priority] || 'Sedang';
+            }
+        });
+    </script>
+</body>
+</html>
