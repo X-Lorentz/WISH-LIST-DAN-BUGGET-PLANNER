@@ -3,293 +3,282 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#6d28d9">
-  <title>Wishlist & Budget Planner</title>
+  <meta name="theme-color" content="#f6f1e7">
+  <title>Catatan Wishlist & Tabungan</title>
   <style>
     :root {
-      --primary: #6d28d9;
-      --primary-2: #2563eb;
-      --success: #059669;
-      --danger: #dc2626;
-      --ink: #1f2937;
-      --muted: #64748b;
-      --surface: #ffffff;
-      --line: #e5e7eb;
-      --background: #f4f7fb;
-      --shadow: 0 10px 30px rgba(31, 41, 55, 0.08);
+      --paper: #fbf9f3;
+      --page: #f1ede4;
+      --ink: #263b36;
+      --muted: #737c70;
+      --line: #dedfd3;
+      --green: #355d4d;
+      --green-light: #e6eee5;
+      --orange: #c76d4b;
+      --orange-light: #f7e9df;
+      --white: #fffefa;
+      --shadow: 0 3px 12px rgba(49, 59, 48, .06);
     }
 
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100vh;
       color: var(--ink);
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #e9eff9 100%);
-      line-height: 1.5;
+      background-color: var(--page);
+      background-image: radial-gradient(#d7d1c5 0.65px, transparent .65px);
+      background-size: 13px 13px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
     }
     button, input, textarea { font: inherit; }
     button { cursor: pointer; }
+    .container { width: min(100% - 32px, 920px); margin: 0 auto; }
 
-    .container { max-width: 1120px; margin: 0 auto; padding: 20px; }
-    header {
-      color: white;
-      text-align: center;
-      padding: 38px 20px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.18);
+    header { padding: 34px 0 26px; }
+    .header-inner {
+      position: relative;
+      padding: 27px 30px 28px;
+      border: 1px solid #d8d8ca;
+      border-radius: 4px 18px 4px 18px;
+      background: var(--paper);
+      box-shadow: 5px 5px 0 #d9d3c7;
     }
-    header h1 { margin: 0 0 6px; font-size: clamp(1.8rem, 5vw, 2.7rem); }
-    header p { margin: 0; opacity: 0.92; }
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--orange);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    header h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -.04em; }
+    header p { margin: 7px 0 0; color: var(--muted); }
+    .header-mark { position: absolute; top: 21px; right: 24px; color: #d8b27f; font-size: 1.7rem; transform: rotate(12deg); }
 
-    .tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 18px;
-      padding: 6px;
-      border-radius: 12px;
-      background: #e9eef7;
-    }
+    .tabs { display: flex; gap: 8px; margin: 18px 0; }
     .tab {
-      flex: 1;
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 14px;
-      color: #475569;
-      background: transparent;
+      border: 1px solid #d7d7ca;
+      border-radius: 4px 12px 4px 12px;
+      padding: 9px 16px;
+      color: var(--muted);
+      background: var(--paper);
       font-weight: 700;
     }
-    .tab[aria-selected="true"] { color: white; background: var(--primary); }
-
-    .card {
-      margin-bottom: 22px;
-      padding: clamp(18px, 3vw, 28px);
-      border: 1px solid rgba(229, 231, 235, 0.9);
-      border-radius: 16px;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-    .card h2 { display: flex; align-items: center; gap: 9px; margin: 0 0 20px; }
+    .tab[aria-selected="true"] { border-color: var(--green); color: white; background: var(--green); }
     .tab-panel[hidden] { display: none; }
 
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .card {
+      margin: 0 0 19px;
+      padding: clamp(19px, 4vw, 28px);
+      border: 1px solid #dedfd3;
+      border-radius: 5px 15px 5px 15px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin: 0 0 19px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.42rem;
+    }
+    .section-number { color: var(--orange); font-family: "Segoe UI", Arial, sans-serif; font-size: .78rem; font-weight: 800; letter-spacing: .08em; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 15px; }
     .form-grid .wide { grid-column: 1 / -1; }
-    .form-group { margin-bottom: 16px; }
-    label { display: block; margin-bottom: 7px; color: #475569; font-weight: 700; }
+    .form-group { margin: 0 0 15px; }
+    label { display: block; margin: 0 0 6px; color: #4c5c52; font-size: .91rem; font-weight: 700; }
     input, textarea {
       width: 100%;
-      border: 1px solid #d1d5db;
-      border-radius: 9px;
-      padding: 12px 13px;
-      background: white;
+      border: 1px solid #d5d8ce;
+      border-radius: 5px;
+      padding: 11px 12px;
       color: var(--ink);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: var(--white);
     }
-    input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.13); }
-
+    input::placeholder, textarea::placeholder { color: #a0a396; }
+    input:focus, textarea:focus { outline: 2px solid #9db5a2; outline-offset: 1px; border-color: var(--green); }
     .currency-input { position: relative; }
-    .currency-input::before {
-      content: "Rp";
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      z-index: 1;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-weight: 700;
-    }
-    .currency-input input { padding-left: 44px; }
+    .currency-input::before { content: "Rp"; position: absolute; z-index: 1; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: .9rem; font-weight: 700; }
+    .currency-input input { padding-left: 40px; }
 
     .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 16px;
+      border: 1px solid var(--green);
+      border-radius: 4px 10px 4px 10px;
+      padding: 10px 16px;
       color: white;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      font-weight: 800;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 7px 16px rgba(109, 40, 217, 0.22); }
-    .btn:focus-visible, .tab:focus-visible, .delete-btn:focus-visible { outline: 3px solid #111827; outline-offset: 3px; }
-    .btn-success { background: linear-gradient(135deg, #059669, #10b981); }
-    .btn-danger { background: linear-gradient(135deg, #dc2626, #ef4444); }
-
-    .status {
-      display: none;
-      margin: 12px 0 0;
-      border-radius: 9px;
-      padding: 11px 13px;
+      background: var(--green);
       font-weight: 700;
+      transition: background .16s ease, transform .16s ease;
     }
+    .btn:hover { background: #294b3d; transform: translateY(-1px); }
+    .btn:focus-visible, .tab:focus-visible, .delete-btn:focus-visible { outline: 3px solid #222; outline-offset: 3px; }
+    .btn-success { border-color: var(--green); background: var(--green); }
+    .btn-danger { border-color: var(--orange); color: #fff; background: var(--orange); }
+    .btn-danger:hover { background: #ac5839; }
+
+    .status { display: none; margin: 12px 0 0; border-radius: 4px; padding: 9px 12px; font-size: .92rem; }
     .status.show { display: block; }
-    .status.error { color: #991b1b; background: #fee2e2; }
-    .status.success { color: #065f46; background: #d1fae5; }
+    .status.error { color: #8d3929; background: var(--orange-light); }
+    .status.success { color: #315640; background: var(--green-light); }
 
-    .savings-panel {
-      text-align: center;
-      border-radius: 16px;
-      padding: 28px 20px;
-      color: #064e3b;
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-    }
-    .savings-panel h3 { margin: 0 0 4px; }
-    .savings-amount { font-size: clamp(2.2rem, 7vw, 3.5rem); font-weight: 900; }
-    .updated { animation: pulse 0.45s ease; }
-    @keyframes pulse { 50% { transform: scale(1.06); } }
-
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0; }
-    .stat-card { border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; background: #fafafa; }
-    .stat-card h4 { margin: 0 0 5px; color: var(--muted); font-size: 0.85rem; }
-    .stat-card p { margin: 0; font-size: 1.15rem; font-weight: 800; }
-
+    .savings-panel { padding: 22px; border-left: 4px solid var(--green); background: var(--green-light); }
+    .savings-panel h3 { margin: 0; color: #526a58; font-size: .95rem; font-weight: 600; }
+    .savings-amount { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 7vw, 3rem); font-weight: 700; }
+    .updated { animation: nudge .35s ease; }
+    @keyframes nudge { 50% { transform: translateY(-3px); } }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0 20px; }
+    .stat-card { padding: 12px; border-top: 2px solid #c9d6c9; background: #f4f4ec; }
+    .stat-card h4 { margin: 0 0 4px; color: var(--muted); font-size: .78rem; font-weight: 600; }
+    .stat-card p { margin: 0; font-weight: 800; }
     .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .progress-bar { height: 28px; overflow: hidden; border-radius: 999px; background: #e5e7eb; }
-    .progress-fill { width: 0; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--primary), var(--primary-2)); transition: width 0.7s ease; }
-    .progress-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
-    .progress-item { border-radius: 10px; padding: 12px; text-align: center; background: #f8fafc; }
-    .progress-item h3 { margin: 0 0 5px; color: var(--muted); font-size: 0.85rem; }
-    .progress-item p { margin: 0; font-weight: 800; }
-    .completion-date { margin-top: 14px; border-radius: 10px; padding: 12px; text-align: center; color: #7c2d12; background: #ffedd5; }
 
-    .wishlist-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .wishlist-item { border: 1px solid var(--line); border-radius: 12px; padding: 18px; background: white; box-shadow: 0 5px 14px rgba(31,41,55,0.05); }
-    .item-name { margin-bottom: 12px; font-size: 1.25rem; font-weight: 800; }
-    .item-detail { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid #f1f5f9; padding: 8px 0; }
+    .progress-header { display: flex; justify-content: space-between; margin-bottom: 7px; }
+    .progress-bar { height: 12px; overflow: hidden; border-radius: 99px; background: #e6e5db; }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .5s ease; }
+    .progress-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+    .progress-item { padding: 10px; border: 1px solid #e8e7dc; background: #f7f6ef; }
+    .progress-item h3 { margin: 0 0 4px; color: var(--muted); font-size: .78rem; font-weight: 600; }
+    .progress-item p { margin: 0; font-size: .95rem; font-weight: 700; }
+    .completion-date { margin-top: 12px; padding: 10px 12px; border-left: 3px solid #d69a60; color: #704b2c; background: #f7efe3; font-size: .9rem; }
+
+    .wishlist-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 12px; }
+    .wishlist-item { padding: 15px; border: 1px solid var(--line); border-radius: 4px 12px 4px 12px; background: var(--white); }
+    .item-name { margin-bottom: 8px; font-family: Georgia, "Times New Roman", serif; font-size: 1.15rem; font-weight: 700; overflow-wrap: anywhere; }
+    .item-detail { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-top: 1px dashed #e3e3d9; font-size: .88rem; }
     .item-detail span:first-child { color: var(--muted); }
-    .delete-btn { width: 100%; margin-top: 10px; border: 0; border-radius: 8px; padding: 9px; color: white; background: var(--danger); font-weight: 800; }
+    .delete-btn { margin-top: 8px; border: 0; padding: 5px 0; color: #a44932; background: transparent; font-size: .88rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 
-    .transaction-list { max-height: 360px; overflow-y: auto; margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; }
-    .transaction-item { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid #f1f5f9; padding: 13px; }
-    .transaction-item:last-child { border-bottom: 0; }
-    .transaction-description { color: var(--muted); }
-    .transaction-date { margin-top: 3px; color: #94a3b8; font-size: 0.82rem; }
-    .transaction-amount { font-weight: 900; white-space: nowrap; }
-    .positive { color: var(--success); }
-    .negative { color: var(--danger); }
-    .empty-state { padding: 30px 16px; text-align: center; color: var(--muted); }
+    .transaction-list { max-height: 340px; overflow-y: auto; margin-top: 10px; border-top: 1px solid var(--line); }
+    .transaction-item { display: flex; justify-content: space-between; gap: 12px; padding: 11px 2px; border-bottom: 1px solid #e9e8df; }
+    .transaction-description { color: var(--ink); }
+    .transaction-date { margin-top: 2px; color: var(--muted); font-size: .8rem; }
+    .transaction-amount { font-size: .9rem; font-weight: 800; white-space: nowrap; }
+    .positive { color: var(--green); }
+    .negative { color: #a44932; }
+    .empty-state { padding: 22px 10px; color: var(--muted); text-align: center; font-size: .93rem; }
+    footer { padding: 8px 0 28px; color: var(--muted); text-align: center; font-size: .83rem; }
+    footer p { margin: 4px 0; }
 
-    footer { border-top: 1px solid var(--line); margin-top: 30px; padding: 24px 20px; text-align: center; color: var(--muted); }
-
-    @media (max-width: 720px) {
+    @media (max-width: 620px) {
+      .container { width: min(100% - 22px, 920px); }
+      header { padding-top: 18px; }
+      .header-inner { padding: 23px 18px; }
+      .header-mark { top: 12px; right: 14px; }
+      .tabs { display: grid; grid-template-columns: 1fr 1fr; }
+      .tab { padding: 9px 7px; font-size: .9rem; }
       .form-grid, .stats, .progress-info { grid-template-columns: 1fr; }
       .form-grid .wide { grid-column: auto; }
       .action-grid { grid-template-columns: 1fr; }
-      .tabs { position: sticky; top: 8px; z-index: 10; }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <h1>Wishlist & Budget Planner</h1>
-      <p>Kelola wishlist dan tabungan dalam satu tempat</p>
+      <div class="header-inner">
+        <p class="eyebrow">Catatan pribadi · 2026</p>
+        <h1>Wishlist & tabungan</h1>
+        <p>Pelan-pelan dikumpulkan, satu keinginan dalam satu waktu.</p>
+        <span class="header-mark" aria-hidden="true">✳</span>
+      </div>
     </div>
   </header>
 
   <main class="container">
     <div class="tabs" role="tablist" aria-label="Menu utama">
-      <button class="tab" id="tab-wishlist" role="tab" aria-controls="panel-wishlist" aria-selected="true" data-panel="panel-wishlist">Tambah Wishlist</button>
-      <button class="tab" id="tab-savings" role="tab" aria-controls="panel-savings" aria-selected="false" data-panel="panel-savings">Kelola Tabungan</button>
+      <button class="tab" id="tab-wishlist" role="tab" aria-controls="panel-wishlist" aria-selected="true" data-panel="panel-wishlist">＋ Wishlist</button>
+      <button class="tab" id="tab-savings" role="tab" aria-controls="panel-savings" aria-selected="false" data-panel="panel-savings">↗ Tabungan</button>
     </div>
 
     <section class="card tab-panel" id="panel-wishlist" role="tabpanel" aria-labelledby="tab-wishlist">
-      <h2>Tambah Barang Wishlist</h2>
+      <h2><span class="section-number">01</span> Tambah barang yang diinginkan</h2>
       <form id="wishlist-form">
         <div class="form-grid">
           <div class="form-group wide">
-            <label for="item-name">Nama Barang</label>
-            <input type="text" id="item-name" maxlength="80" placeholder="Contoh: Sepatu sekolah" required>
+            <label for="item-name">Nama barang</label>
+            <input type="text" id="item-name" maxlength="80" placeholder="Misalnya: Sepatu sekolah" required>
           </div>
           <div class="form-group currency-input">
-            <label for="item-price">Harga Barang</label>
+            <label for="item-price">Harganya</label>
             <input type="text" id="item-price" inputmode="numeric" placeholder="250.000" required>
           </div>
           <div class="form-group currency-input">
-            <label for="weekly-budget">Uang Saku per Minggu</label>
+            <label for="weekly-budget">Bisa disisihkan per minggu</label>
             <input type="text" id="weekly-budget" inputmode="numeric" placeholder="50.000" required>
           </div>
         </div>
-        <button class="btn" type="submit">Tambah ke Wishlist</button>
+        <button class="btn" type="submit">Simpan ke wishlist</button>
         <p class="status" id="wishlist-status" role="status" aria-live="polite"></p>
       </form>
     </section>
 
     <section class="card tab-panel" id="panel-savings" role="tabpanel" aria-labelledby="tab-savings" hidden>
-      <h2>Kelola Tabungan</h2>
+      <h2><span class="section-number">02</span> Catatan tabungan</h2>
       <div class="savings-panel">
-        <h3>Total Tabungan Saat Ini</h3>
+        <h3>Uang yang sudah terkumpul</h3>
         <div class="savings-amount" id="total-savings">Rp 0</div>
       </div>
-
       <div class="stats">
-        <div class="stat-card"><h4>Transaksi Bulan Ini</h4><p id="monthly-transactions">0</p></div>
-        <div class="stat-card"><h4>Rata-rata Menabung</h4><p id="average-savings">Rp 0</p></div>
-        <div class="stat-card"><h4>Target Tercapai</h4><p id="target-achieved">0%</p></div>
+        <div class="stat-card"><h4>Transaksi bulan ini</h4><p id="monthly-transactions">0</p></div>
+        <div class="stat-card"><h4>Rata-rata sekali menabung</h4><p id="average-savings">Rp 0</p></div>
+        <div class="stat-card"><h4>Target terkumpul</h4><p id="target-achieved">0%</p></div>
       </div>
-
       <div class="form-grid">
         <div class="form-group currency-input">
-          <label for="transaction-amount">Jumlah Transaksi</label>
+          <label for="transaction-amount">Jumlah uang</label>
           <input type="text" id="transaction-amount" inputmode="numeric" placeholder="100.000">
         </div>
         <div class="form-group">
-          <label for="transaction-description">Keterangan</label>
-          <textarea id="transaction-description" rows="1" maxlength="120" placeholder="Contoh: Uang saku minggu ini"></textarea>
+          <label for="transaction-description">Catatan (boleh dikosongkan)</label>
+          <textarea id="transaction-description" rows="1" maxlength="120" placeholder="Misalnya: uang saku minggu ini"></textarea>
         </div>
       </div>
       <div class="action-grid">
-        <button class="btn btn-success" id="add-transaction" type="button">Tambah Tabungan</button>
-        <button class="btn btn-danger" id="subtract-transaction" type="button">Kurangi Tabungan</button>
+        <button class="btn btn-success" id="add-transaction" type="button">＋ Tambah uang</button>
+        <button class="btn btn-danger" id="subtract-transaction" type="button">− Ambil uang</button>
       </div>
       <p class="status" id="savings-status" role="status" aria-live="polite"></p>
-
-      <h3 style="margin-top:24px">Riwayat Transaksi</h3>
-      <div class="transaction-list" id="transaction-list">
-        <div class="empty-state">Belum ada transaksi.</div>
-      </div>
+      <h3 style="margin:22px 0 0; font-family:Georgia,serif">Riwayat</h3>
+      <div class="transaction-list" id="transaction-list"><div class="empty-state">Belum ada catatan transaksi.</div></div>
     </section>
 
     <section class="card">
-      <h2>Progress Menabung</h2>
-      <div class="progress-header"><strong>Target Menabung</strong><strong id="progress-percentage">0%</strong></div>
-      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
+      <h2><span class="section-number">03</span> Seberapa dekat dengan target?</h2>
+      <div class="progress-header"><span>Progress tabungan</span><strong id="progress-percentage">0%</strong></div>
+      <div class="progress-bar" role="progressbar" aria-label="Progress target tabungan" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-info">
+        <div class="progress-item"><h3>Total harga wishlist</h3><p id="total-price">Rp 0</p></div>
+        <div class="progress-item"><h3>Tabungan sekarang</h3><p id="current-savings">Rp 0</p></div>
+        <div class="progress-item"><h3>Masih kurang</h3><p id="remaining-amount">Rp 0</p></div>
       </div>
       <div class="progress-info">
-        <div class="progress-item"><h3>Total Harga Wishlist</h3><p id="total-price">Rp 0</p></div>
-        <div class="progress-item"><h3>Tabungan Saat Ini</h3><p id="current-savings">Rp 0</p></div>
-        <div class="progress-item"><h3>Kekurangan</h3><p id="remaining-amount">Rp 0</p></div>
+        <div class="progress-item"><h3>Perkiraan waktu</h3><p id="estimated-time">0 minggu</p></div>
+        <div class="progress-item"><h3>Rata-rata jatah per minggu</h3><p id="weekly-budget-display">Rp 0</p></div>
       </div>
-      <div class="progress-info">
-        <div class="progress-item"><h3>Perkiraan Waktu</h3><p id="estimated-time">0 minggu</p></div>
-        <div class="progress-item"><h3>Rata-rata Uang Saku/Minggu</h3><p id="weekly-budget-display">Rp 0</p></div>
-      </div>
-      <div class="completion-date" id="completion-date">Belum ada data target</div>
+      <div class="completion-date" id="completion-date">Tambahkan barang ke wishlist untuk melihat perkiraan.</div>
     </section>
 
     <section class="card">
-      <h2>Daftar Wishlist Anda</h2>
-      <div class="wishlist-items" id="wishlist-items">
-        <div class="empty-state">Belum ada barang di wishlist.</div>
-      </div>
+      <h2><span class="section-number">04</span> Barang yang ingin dibeli</h2>
+      <div class="wishlist-items" id="wishlist-items"><div class="empty-state">Wishlist masih kosong. Tambahkan barang pertama di atas.</div></div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <p>Dikembangkan oleh M. Nabil Naufal Yakin dan Syaifullah Ilham Nauval - SMKN Rengel</p>
-    </div>
+  <footer class="container">
+    <p>Dikembangkan oleh M. Nabil Naufal Yakin dan Syaifullah Ilham Nauval · SMKN Rengel</p>
+    <p>Catatan kecil untuk merencanakan keinginan dan tabungan.</p>
   </footer>
 
   <script>
     (() => {
       const STORAGE_KEY = "wishlist-budget-planner-v2";
       const $ = (id) => document.getElementById(id);
-
       const refs = {
         wishlistForm: $("wishlist-form"), wishlistItems: $("wishlist-items"),
         itemName: $("item-name"), itemPrice: $("item-price"), weeklyBudget: $("weekly-budget"),
@@ -304,7 +293,7 @@
           const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
           return {
             wishlist: Array.isArray(saved?.wishlist) ? saved.wishlist : [],
-            savings: Number(saved?.savings) || 0,
+            savings: Math.max(0, Number(saved?.savings) || 0),
             transactions: Array.isArray(saved?.transactions) ? saved.transactions : []
           };
         } catch (_) {
@@ -313,7 +302,11 @@
       }
 
       function saveState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (_) {
+          showStatus("savings-status", "Penyimpanan browser penuh atau tidak tersedia.", "error");
+        }
       }
 
       function formatCurrency(value) {
@@ -346,63 +339,51 @@
       function renderWishlist() {
         refs.wishlistItems.replaceChildren();
         if (!state.wishlist.length) {
-          refs.wishlistItems.append(createElement("div", "empty-state", "Belum ada barang di wishlist."));
+          refs.wishlistItems.append(createElement("div", "empty-state", "Wishlist masih kosong. Tambahkan barang pertama di atas."));
           return;
         }
-
         state.wishlist.forEach((item) => {
           const card = createElement("article", "wishlist-item");
           card.append(createElement("div", "item-name", item.name));
-
-          const details = [
-            ["Harga", `Rp ${formatCurrency(item.price)}`],
-            ["Uang saku/minggu", `Rp ${formatCurrency(item.weeklyBudget)}`],
-            ["Perkiraan", `${item.weeksNeeded} minggu`]
-          ];
-          details.forEach(([label, value]) => {
+          [["Harga", `Rp ${formatCurrency(item.price)}`], ["Jatah/minggu", `Rp ${formatCurrency(item.weeklyBudget)}`], ["Perkiraan", `${item.weeksNeeded} minggu`]].forEach(([label, value]) => {
             const row = createElement("div", "item-detail");
             row.append(createElement("span", "", label), createElement("strong", "", value));
             card.append(row);
           });
-
-          const button = createElement("button", "delete-btn", "Hapus");
+          const button = createElement("button", "delete-btn", "Hapus dari wishlist");
           button.type = "button";
           button.dataset.id = item.id;
-          button.setAttribute("aria-label", `Hapus ${item.name}`);
+          button.setAttribute("aria-label", `Hapus ${item.name} dari wishlist`);
           card.append(button);
           refs.wishlistItems.append(card);
         });
-
-        refs.wishlistItems.queryChildren = null;
       }
 
       function renderTransactions() {
         refs.transactionList.replaceChildren();
         if (!state.transactions.length) {
-          refs.transactionList.append(createElement("div", "empty-state", "Belum ada transaksi."));
+          refs.transactionList.append(createElement("div", "empty-state", "Belum ada catatan transaksi."));
           return;
         }
-
         state.transactions.forEach((transaction) => {
           const row = createElement("div", "transaction-item");
           const detail = createElement("div", "");
           detail.append(createElement("div", "transaction-description", transaction.description));
           detail.append(createElement("div", "transaction-date", transaction.date));
-
           const positive = transaction.type === "tambah";
           const amount = createElement("div", `transaction-amount ${positive ? "positive" : "negative"}`,
-            `${positive ? "+" : "-"} Rp ${formatCurrency(transaction.amount)}`);
+            `${positive ? "+" : "−"} Rp ${formatCurrency(transaction.amount)}`);
           row.append(detail, amount);
           refs.transactionList.append(row);
         });
       }
 
       function renderProgress() {
-        const total = state.wishlist.reduce((sum, item) => sum + item.price, 0);
+        const total = state.wishlist.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
         const remaining = Math.max(total - state.savings, 0);
         const percentage = total ? Math.min(100, Math.round((state.savings / total) * 100)) : 0;
         const averageWeekly = state.wishlist.length
-          ? Math.round(state.wishlist.reduce((sum, item) => sum + item.weeklyBudget, 0) / state.wishlist.length)
+          ? Math.round(state.wishlist.reduce((sum, item) => sum + (Number(item.weeklyBudget) || 0), 0) / state.wishlist.length)
           : 0;
         const weeks = averageWeekly ? Math.ceil(remaining / averageWeekly) : 0;
 
@@ -416,11 +397,11 @@
         $("estimated-time").textContent = `${weeks} minggu`;
 
         if (!state.wishlist.length) {
-          $("completion-date").textContent = "Belum ada data target";
+          $("completion-date").textContent = "Tambahkan barang ke wishlist untuk melihat perkiraan.";
         } else if (remaining === 0) {
-          $("completion-date").textContent = "Selamat! Target tabungan sudah tercapai";
-        } else if (averageWeekly === 0) {
-          $("completion-date").textContent = "Tambahkan uang saku mingguan untuk menghitung tanggal";
+          $("completion-date").textContent = "Target wishlist sudah tercapai. Selamat!";
+        } else if (!averageWeekly) {
+          $("completion-date").textContent = "Isi jatah mingguan agar perkiraan selesai bisa dihitung.";
         } else {
           const date = new Date();
           date.setDate(date.getDate() + weeks * 7);
@@ -433,19 +414,16 @@
         const now = new Date();
         const monthly = state.transactions.filter((transaction) => {
           const date = new Date(transaction.timestamp);
-          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+          return !Number.isNaN(date.getTime()) && date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
         }).length;
         $("monthly-transactions").textContent = String(monthly);
-
         const deposits = state.transactions.filter((transaction) => transaction.type === "tambah");
         const average = deposits.length
-          ? Math.round(deposits.reduce((sum, transaction) => sum + transaction.amount, 0) / deposits.length)
+          ? Math.round(deposits.reduce((sum, transaction) => sum + (Number(transaction.amount) || 0), 0) / deposits.length)
           : 0;
         $("average-savings").textContent = `Rp ${formatCurrency(average)}`;
-
-        const total = state.wishlist.reduce((sum, item) => sum + item.price, 0);
-        const achieved = total ? Math.min(100, Math.round((state.savings / total) * 100)) : 0;
-        $("target-achieved").textContent = `${achieved}%`;
+        const total = state.wishlist.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+        $("target-achieved").textContent = `${total ? Math.min(100, Math.round((state.savings / total) * 100)) : 0}%`;
       }
 
       function renderAll() {
@@ -473,94 +451,62 @@
         const name = refs.itemName.value.trim();
         const price = parseCurrency(refs.itemPrice.value);
         const weeklyBudget = parseCurrency(refs.weeklyBudget.value);
-
         if (!name || price <= 0 || weeklyBudget <= 0) {
-          showStatus("wishlist-status", "Nama barang dan nominal harus diisi dengan benar.", "error");
+          showStatus("wishlist-status", "Isi nama barang dan nominal yang lebih dari nol.", "error");
           return;
         }
-
-        const weeksNeeded = Math.ceil(price / weeklyBudget);
         state.wishlist.push({
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-          name,
-          price,
-          weeklyBudget,
-          weeksNeeded
+          id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+          name, price, weeklyBudget, weeksNeeded: Math.ceil(price / weeklyBudget)
         });
         saveState();
         renderAll();
         refs.wishlistForm.reset();
-        showStatus("wishlist-status", `${name} berhasil ditambahkan.`);
+        showStatus("wishlist-status", `${name} sudah masuk wishlist.`);
       });
 
       refs.wishlistItems.addEventListener("click", (event) => {
         const button = event.target.closest(".delete-btn");
         if (!button) return;
         const item = state.wishlist.find((entry) => entry.id === button.dataset.id);
-        if (!item || !confirm(`Hapus "${item.name}" dari wishlist?`)) return;
+        if (!item || !confirm(`Hapus “${item.name}” dari wishlist?`)) return;
         state.wishlist = state.wishlist.filter((entry) => entry.id !== item.id);
         saveState();
         renderAll();
-        showStatus("wishlist-status", `${item.name} berhasil dihapus.`);
+        showStatus("wishlist-status", `${item.name} dihapus dari wishlist.`);
       });
 
-      function addTransaction() {
+      function recordTransaction(type) {
         const amount = parseCurrency(refs.transactionAmount.value);
         if (amount <= 0) {
-          showStatus("savings-status", "Masukkan jumlah transaksi yang valid.", "error");
+          showStatus("savings-status", "Masukkan jumlah uang yang valid.", "error");
+          return;
+        }
+        if (type === "kurang" && amount > state.savings) {
+          showStatus("savings-status", "Jumlahnya lebih besar dari tabungan yang tersedia.", "error");
           return;
         }
         const now = new Date();
         state.transactions.unshift({
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-          type: "tambah",
+          id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random()}`,
+          type,
           amount,
-          description: refs.transactionDescription.value.trim() || "Penambahan tabungan",
+          description: refs.transactionDescription.value.trim() || (type === "tambah" ? "Tambah tabungan" : "Ambil tabungan"),
           date: now.toLocaleDateString("id-ID", { dateStyle: "medium", timeStyle: "short" }),
           timestamp: now.toISOString()
         });
-        state.savings += amount;
+        state.savings += type === "tambah" ? amount : -amount;
         saveState();
         renderAll();
         refs.transactionAmount.value = "";
         refs.transactionDescription.value = "";
         $("total-savings").classList.add("updated");
-        setTimeout(() => $("total-savings").classList.remove("updated"), 500);
-        showStatus("savings-status", "Tabungan berhasil ditambahkan.");
+        setTimeout(() => $("total-savings").classList.remove("updated"), 400);
+        showStatus("savings-status", type === "tambah" ? "Tabungan berhasil ditambah." : "Tabungan berhasil diambil.");
       }
 
-      function subtractTransaction() {
-        const amount = parseCurrency(refs.transactionAmount.value);
-        if (amount <= 0) {
-          showStatus("savings-status", "Masukkan jumlah transaksi yang valid.", "error");
-          return;
-        }
-        if (amount > state.savings) {
-          showStatus("savings-status", "Jumlah pengurangan melebihi tabungan saat ini.", "error");
-          return;
-        }
-        const now = new Date();
-        state.transactions.unshift({
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-          type: "kurang",
-          amount,
-          description: refs.transactionDescription.value.trim() || "Pengurangan tabungan",
-          date: now.toLocaleDateString("id-ID", { dateStyle: "medium", timeStyle: "short" }),
-          timestamp: now.toISOString()
-        });
-        state.savings -= amount;
-        saveState();
-        renderAll();
-        refs.transactionAmount.value = "";
-        refs.transactionDescription.value = "";
-        $("total-savings").classList.add("updated");
-        setTimeout(() => $("total-savings").classList.remove("updated"), 500);
-        showStatus("savings-status", "Tabungan berhasil dikurangi.");
-      }
-
-      $("add-transaction").addEventListener("click", addTransaction);
-      $("subtract-transaction").addEventListener("click", subtractTransaction);
-
+      $("add-transaction").addEventListener("click", () => recordTransaction("tambah"));
+      $("subtract-transaction").addEventListener("click", () => recordTransaction("kurang"));
       renderAll();
     })();
   </script>
